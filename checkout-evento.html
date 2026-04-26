@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reserva Lançamento - Esperança Através das Lágrimas</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+
+  <style>
+    @font-face { font-family: 'Bodoni'; src: url(./Bodoni.ttf); }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { font-family: 'PT Serif', serif; background-color: #e7e5e0; color: #333; min-height: 100vh; }
+    body::before { content: ""; position: fixed; inset: 0; z-index: -1; background-image: url('./assets/Capa Interna 2.png'); background-attachment: fixed; background-size: cover; background-position: center; opacity: 0.5; }
+
+    .checkout-container { max-width: 800px; margin: 60px auto; background: #fcfcf9; padding: 50px; box-shadow: 0 40px 100px rgba(0,0,0,0.1); border-radius: 2px; }
+    
+    .synopsis-title { font-size: 1.8rem; margin-bottom: 25px; color: #1a1a1a; position: relative; font-family: 'PT Serif', serif; }
+    .synopsis-title::after { content: ''; position: absolute; bottom: -10px; left: 0; width: 60px; height: 2px; background-color: #C5A059; }
+
+    .form-label { font-family: 'Bodoni', serif; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; margin: 30px 0 15px; color: #C5A059; display: block; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+    
+    input[type="text"], input[type="tel"] { width: 100%; padding: 15px 20px; border: 1px solid #d8d5c8; background: transparent; font-family: 'PT Serif', serif; outline: none; transition: border-color 0.3s; }
+    input[type="text"]:focus, input[type="tel"]:focus { border-color: #C5A059; }
+    
+    .menu-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .menu-card { border: 1px solid #d8d5c8; padding: 0; cursor: pointer; transition: 0.3s; position: relative; border-radius: 2px; overflow: hidden; background: #fff; }
+    .menu-card input { position: absolute; opacity: 0; }
+    .menu-card:has(input:checked) { border-color: #C5A059; box-shadow: 0 10px 30px rgba(172, 133, 65, 0.1); }
+    .card-img { width: 100%; height: 400px; object-fit: cover; border-bottom: 1px solid #d8d5c8; background: #fff; }
+    .card-content { padding: 25px 20px; text-align: center; }
+    .card-content strong { display: block; margin-bottom: 10px; font-size: 0.85rem; color: #1a1a1a; font-family: 'Bodoni', serif; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 800; }
+    .card-content small { color: #777; font-size: 0.78rem; line-height: 1.6; display: block; font-family: 'PT Serif', serif; }
+
+    .back-button { position: fixed; top: 30px; left: 30px; display: flex; align-items: center; gap: 8px; color: #ac8541; text-decoration: none; font-family: 'Bodoni', serif; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1.5px; z-index: 1000; transition: all 0.3s; background: #fff; padding: 10px 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); border-radius: 2px; }
+    .back-button:hover { color: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+    .back-button svg { width: 16px; height: 16px; }
+
+    .order-summary { background: #f0eee9; padding: 20px; margin-top: 25px; border-radius: 2px; border: 1px dashed #C5A059; }
+    .summary-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+    .summary-total { border-top: 1px solid #d8d5c8; padding-top: 10px; font-weight: bold; color: #1a1a1a; font-size: 1.1rem; margin-bottom: 0; }
+
+    .btn { padding: 15px 25px; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; background-color: #1a1a1a; color: #fff; border: none; width: 100%; margin-top: 30px; border-radius: 2px; transition: all 0.4s; }
+    .btn:hover { background-color: #333; transform: translateY(-2px); }
+
+    #paymentBrick_container { margin-top: 30px; display: none; }
+
+    /* Estilo para o QR Code do Pix */
+    .pix-display-container { text-align: center; padding: 30px; background: #fff; border: 1px solid #C5A059; border-radius: 2px; }
+    .pix-qr-img { width: 220px; height: 220px; margin: 20px 0; }
+    .pix-copy-paste { width: 100%; height: 80px; padding: 10px; font-size: 0.8rem; border: 1px solid #d8d5c8; background: #f9f9f9; resize: none; margin-bottom: 20px; font-family: monospace; }
+
+    @media (max-width: 768px) {
+      .form-grid, .menu-options { grid-template-columns: 1fr; }
+      .checkout-container { margin: 20px; padding: 30px; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="index.html" class="back-button">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+  Voltar
+</a>
+
+<div class="checkout-container">
+  <h2 class="synopsis-title">Reserva para o Evento</h2>
+  
+  <form id="form-evento">
+    <p class="form-label">Seus Dados</p>
+    <div class="form-grid">
+      <input type="text" id="nome" placeholder="Nome Completo" required>
+      <input type="tel" id="telefone" placeholder="WhatsApp (DDD + Número)" required>
+    </div>
+
+    <p class="form-label">Escolha seu Brunch para o evento</p>
+    <div class="menu-options">
+      <label class="menu-card">
+        <input type="radio" name="prato" value="brunch_individual" data-preco="39.90" checked>
+        <img src="./assets/Brunch Individual.jpeg" alt="Brunch Individual" class="card-img">
+        <span class="card-content">
+          <strong>Brunch Individual (R$ 39,90)</strong>
+          <small>01 fatia de pão brioche artesanal tostado com manteiga, 01 ovo, 01 fatia de bacon, sourcream, 02 panquecas com maple syrup, 01 bolo caseiro de laranja com calda.</small>
+        </span>
+      </label>
+      
+      <label class="menu-card">
+        <input type="radio" name="prato" value="brunch_individual_plus" data-preco="74.90">
+        <img src="./assets/Brunch Individual Plus.jpeg" alt="Brunch Individual Plus" class="card-img">
+        <span class="card-content">
+          <strong>Brunch Individual Plus (R$ 74,90)</strong>
+          <small>01 croissant de fermentação natural artesanal, 01 ovo, 01 fatia de bacon, sourcream, tomate confit, pasta de abacate, 02 panquecas com maple syrup, 01 bolo caseiro de laranja.</small>
+        </span>
+      </label>
+    </div>
+
+    <div class="order-summary">
+      <div class="summary-line"><span>Livro (Esperança Através das Lágrimas):</span> <span>R$ 67,90</span></div>
+      <div class="summary-line"><span>Prato Selecionado:</span> <span id="display-preco-prato">R$ 50,00</span></div>
+      <div class="summary-line summary-total"><span>Total:</span> <span id="display-total">R$ 117,90</span></div>
+    </div>
+
+    <button type="submit" class="btn">Confirmar Reserva e Pagar</button>
+  </form>
+
+  <div id="paymentBrick_container"></div>
+</div>
+
+<script>
+  // Chave de teste do DevEagle
+  const mp = new MercadoPago('TEST-fc1a0327-185b-4eb1-aafc-48d0a61da05c', { locale: 'pt-BR' });
+  
+  // Captura parâmetros da URL
+  const params = new URLSearchParams(window.location.search);
+  const qty = params.get('qty') || '1';
+  const fmt = params.get('fmt') || 'fisico';
+  
+  let basePrice = (qty === '2') ? 107.90 : 58.90;
+  let bookName = (qty === '2') ? "Combo 02 Livros (Pré-Venda)" : "01 Livro (Pré-Venda)";
+  if (fmt === 'kindle') bookName += " + Ebook Kindle (Grátis)";
+  
+  let precoPratoAtual = 39.90; // Valor inicial (Brunch Individual)
+  let totalAtual = basePrice + precoPratoAtual;
+
+  // Função para atualizar o resumo no HTML
+  function updateSummary() {
+    const summaryContainer = document.querySelector('.order-summary');
+    summaryContainer.innerHTML = `
+      <div class="summary-line" id="book-line"><span>${bookName}:</span> <span>R$ ${basePrice.toFixed(2).replace('.', ',')}</span></div>
+      ${qty === '2' ? '<div style="font-size: 0.75rem; color: #666; margin-top: -5px; margin-bottom: 10px; font-style: italic;">(Combo promocional de Pré-Venda — porque você, com certeza, conhece alguém que já passou por isso.)</div>' : ''}
+      ${fmt === 'kindle' ? '<div style="font-size: 0.75rem; color: #C5A059; margin-top: -5px; margin-bottom: 10px; font-style: italic;">+ Versão Kindle inclusa de graça</div>' : ''}
+      <div class="summary-line"><span>Brunch Selecionado:</span> <span id="display-preco-prato">R$ ${precoPratoAtual.toFixed(2).replace('.', ',')}</span></div>
+      <div class="summary-line summary-total"><span>Total:</span> <span id="display-total">R$ ${totalAtual.toFixed(2).replace('.', ',')}</span></div>
+    `;
+  }
+
+  // Inicializa o resumo
+  updateSummary();
+
+  // Atualização dinâmica dos valores no resumo quando muda o prato
+  document.querySelectorAll('input[name="prato"]').forEach(radio => {
+    radio.addEventListener('change', (e) => {
+      precoPratoAtual = parseFloat(e.target.dataset.preco);
+      totalAtual = basePrice + precoPratoAtual;
+      updateSummary();
+    });
+  });
+
+  // GSAP para transição suave do formulário para o checkout
+  document.getElementById('form-evento').addEventListener('submit', (e) => {
+    e.preventDefault();
+    gsap.to("#form-evento", { opacity: 0, height: 0, display: 'none', duration: 0.5 });
+    document.getElementById('paymentBrick_container').style.display = 'block';
+    gsap.from("#paymentBrick_container", { opacity: 0, y: 20, duration: 0.5, delay: 0.2 });
+    renderMercadoPagoBrick(totalAtual);
+  });
+
+  function renderMercadoPagoBrick(amount) {
+    const bricksBuilder = mp.bricks();
+    bricksBuilder.create("payment", "paymentBrick_container", {
+      initialization: { amount: amount },
+      customization: {
+        paymentMethods: {
+          ticket: "all",
+          bankTransfer: "all",
+          creditCard: "all",
+          debitCard: "all",
+          mercadoPago: "all"
+        },
+      },
+      callbacks: {
+        onReady: () => {},
+        onSubmit: ({ selectedPaymentMethod, formData }) => {
+          const nomeCliente = document.getElementById('nome').value;
+          const telefoneCliente = document.getElementById('telefone').value.replace(/\D/g, '');
+          const pratoEscolhido = document.querySelector('input[name="prato"]:checked').value;
+          const emailTecnico = `${telefoneCliente}@venda.com.br`;
+
+          const payload = {
+            token: formData.token,
+            issuer_id: formData.issuer_id,
+            payment_method_id: formData.payment_method_id,
+            installments: formData.installments,
+            payer: { 
+                email: emailTecnico, 
+                identification: formData.payer ? formData.payer.identification : null 
+            },
+            metadata: { 
+                tipo_entrega: "evento", 
+                prato: pratoEscolhido,
+                nome: nomeCliente,
+                telefone: telefoneCliente,
+                quantidade: qty,
+                formato: fmt
+            }
+          };
+
+          return new Promise((resolve, reject) => {
+            fetch("https://neown8n.neowchat.com.br/webhook-test/pagamento-livro-isabella", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+              // LÓGICA PARA EXIBIÇÃO DE PIX
+              if (data.pix_data && data.pix_data.qr_code_base64) {
+                const container = document.getElementById('paymentBrick_container');
+                container.innerHTML = `
+                  <div class="pix-display-container">
+                    <h3 style="font-family: 'Bodoni', serif; margin-bottom: 15px; color: #1a1a1a;">Escaneie o QR Code</h3>
+                    <img src="data:image/png;base64,${data.pix_data.qr_code_base64}" class="pix-qr-img">
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">Ou utilize o código Copia e Cola:</p>
+                    <textarea readonly class="pix-copy-paste">${data.pix_data.qr_code}</textarea>
+                    <button onclick="window.location.reload()" class="btn" style="width: auto; padding: 10px 20px; font-size: 0.75rem;">Voltar</button>
+                    <p style="margin-top: 20px; font-size: 0.8rem; color: #C5A059; font-style: italic;">A confirmação é instantânea.</p>
+                  </div>
+                `;
+                resolve();
+              } 
+              // LÓGICA PARA SUCESSO CARTÃO/OUTROS
+              else if (data.status === "approved") {
+                window.location.href = "obrigado.html";
+                resolve();
+              } else {
+                alert("Pagamento não aprovado. Verifique os dados ou mude a forma de pagamento.");
+                reject();
+              }
+            })
+            .catch(error => {
+              console.error("Erro na conexão:", error);
+              alert("Erro na conexão com o servidor.");
+              reject();
+            });
+          });
+        },
+        onError: (error) => { console.error(error); }
+      }
+    });
+  }
+</script>
+
+</body>
+</html>

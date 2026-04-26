@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Landing Page - Esperança Através das Lágrimas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* 1. FONTES E DEFINIÇÕES GERAIS */
+    @font-face {
+      font-family: 'Altesse';
+      src: url('./Altesse.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Bodoni';
+      src: url(./Bodoni.ttf);
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    .altesse-text {
+      font-family: 'Altesse', serif;
+      font-size: 1.25em;
+      line-height: 0;
+    }
+
+    .bodoni-text {
+      font-family: 'Bodoni', serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 800;
+      font-size: 0.95em;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'PT Serif', serif;
+      background-color: #e7e5e0;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image: url('./assets/Capa Interna 2.png');
+      background-attachment: fixed;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.5;
+    }
+
+    #main-wrapper {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    .panel {
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .hero-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      min-height: auto;
+      padding: 30px 0;
+      background-color: transparent;
+    }
+
+    .bg-video-container {
+      position: relative;
+      width: 100%;
+      max-width: 1250px;
+      height: auto;
+      max-height: 280px;
+      z-index: 10;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background-color: #e7e5e0;
+      position: relative;
+    }
+
+    .bg-video-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .banner-text-side {
+      padding: 20px 30px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: none;
+    }
+
+    .banner-label {
+      font-family: 'Bodoni', serif;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: #ac8541;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .banner-info-text {
+      font-family: 'PT Serif', serif;
+      font-size: 1.1rem;
+      color: #1a1a1a;
+      line-height: 1.4;
+      margin-bottom: 20px;
+    }
+
+    .banner-info-text:last-child {
+      margin-bottom: 0;
+    }
+
+    .banner-image-side {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 0;
+      mask-image: linear-gradient(to right, transparent 0%, black 45%, black 55%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 45%, black 55%, transparent 100%);
+    }
+
+    .banner-image-side img {
+      width: 85%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      margin-top: -40px;
+      align-self: flex-start;
+    }
+
+    .hero-text-wrapper {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .hero-divider {
+      width: 100%;
+      max-width: 250px;
+      height: 2px;
+      background: linear-gradient(to left, #ac8541, #e4cc98);
+      margin: 25px auto;
+      border-radius: 2px;
+    }
+
+    .lagrimas {
+      font-family: 'Bodoni', serif;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: #1a1a1a;
+    }
+
+    /* =========================================
+       2. SEÇÃO DA SINOPSE
+       ========================================= */
+    .synopsis-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 60px;
+      padding: 60px 8%;
+      background-color: #fcfcf9;
+      position: relative;
+      max-width: 1250px;
+      margin: 40px auto 80px;
+      border-radius: 0;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+    }
+
+    .photo-placeholder {
+      width: 100%;
+      max-width: 380px;
+      aspect-ratio: 3/4;
+      background: linear-gradient(135deg, #EBE9E1 0%, #D8D5C8 100%);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+      border-radius: 0;
+      overflow: hidden;
+    }
+
+    .delivery-selection {
+      margin: 25px 0 0;
+      text-align: left;
+      max-width: 380px;
+      font-family: 'PT Serif', serif;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      color: #333;
+      transition: color 0.3s ease;
+    }
+
+    .radio-option:hover {
+      color: #C5A059;
+    }
+
+    .radio-option input[type="radio"] {
+      appearance: none;
+      width: 8px;
+      height: 8px;
+      border: 1px solid #d8d5c8;
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      background-color: #fff;
+    }
+
+    .radio-option input[type="radio"]:checked {
+      border-color: #C5A059;
+    }
+
+    .radio-option input[type="radio"]:checked::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+      height: 6px;
+      background-color: #C5A059;
+      border-radius: 50%;
+    }
+
+    .slider-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .slide {
+      min-width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .slide video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .slider-dots {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .dot.active {
+      background-color: #C5A059;
+      transform: scale(1.4);
+    }
+
+    .slider-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: rgba(197, 160, 89, 0.2);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(197, 160, 89, 0.4);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 50%;
+      z-index: 15;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .slider-arrow:hover {
+      background: rgba(255, 255, 255, 0.5);
+      color: #1a1a1a;
+    }
+
+    .arrow-left {
+      left: 15px;
+    }
+
+    .arrow-right {
+      right: 15px;
+    }
+
+    .synopsis-title {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      color: #1a1a1a;
+      position: relative;
+    }
+
+    .synopsis-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 2px;
+      background-color: #C5A059;
+    }
+
+    .synopsis-text {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    .book-price {
+      font-size: 1.8rem;
+      color: #C5A059;
+      margin-bottom: 30px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 20px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 15px 25px;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      text-decoration: none;
+      display: inline-block;
+      text-align: center;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background-color: #1a1a1a;
+      color: #fff;
+      border: 1px solid #1a1a1a;
+    }
+
+    .btn-primary.disabled {
+      background-color: #888;
+      border-color: #888;
+      opacity: 0.6;
+      pointer-events: none;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: #1a1a1a;
+      border: 1px solid #1a1a1a;
+    }
+
+    .btn-secondary:hover {
+      background-color: #1a1a1a;
+      color: #fff;
+      transform: translateY(-3px);
+    }
+
+    /* =========================================
+       3. SEÇÃO DE CHECKOUT (O NOVO)
+       ========================================= */
+    .checkout-container {
+      background-color: #F8F7F4;
+      padding: 100px 8%;
+      display: none;
+      /* Escondido inicialmente */
+      justify-content: center;
+      opacity: 0;
+    }
+
+    .checkout-wrapper {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #d8d5c8;
+      background: transparent;
+      font-family: 'PT Serif', serif;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #C5A059;
+    }
+
+    .form-label {
+      font-family: 'Bodoni', serif;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      margin: 25px 0 15px;
+      color: #C5A059;
+    }
+
+    .menu-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .menu-card {
+      border: 1px solid #d8d5c8;
+      padding: 20px;
+      cursor: pointer;
+      transition: 0.3s;
+      position: relative;
+    }
+
+    .menu-card:has(input:checked) {
+      border-color: #C5A059;
+      background-color: rgba(197, 160, 89, 0.05);
+    }
+
+    .menu-card input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .card-content strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 1.1rem;
+    }
+
+    .card-content small {
+      color: #666;
+      font-style: italic;
+    }
+
+    /* CANVAS MOSQUITINHO */
+    #mosquitinho-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    .flower-wrapper {
+      position: absolute;
+      transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      will-change: transform;
+    }
+
+    .mosquitinho {
+      width: 100%;
+      height: 100%;
+      background-image: url('mosquitinho.svg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+
+    @keyframes floatGentle {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-15px) rotate(15deg);
+      }
+    }
+
+    /* =========================================
+       POPUP DA SINOPSE
+       ========================================= */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-card {
+      background-color: #fcfcf9;
+      width: 90%;
+      max-width: 800px;
+      max-height: 85vh;
+      padding: 50px;
+      position: relative;
+      overflow-y: auto;
+      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.3);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: translateY(0);
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 2rem;
+      cursor: pointer;
+      color: #999;
+      transition: color 0.3s;
+    }
+
+    .close-modal:hover {
+      color: #C5A059;
+    }
+
+    .read-more-link {
+      color: #C5A059;
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 700;
+      margin-left: 5px;
+      transition: color 0.3s;
+    }
+
+    .read-more-link:hover {
+      color: #1a1a1a;
+    }
+
+    /* RESPONSIVIDADE */
+    @media (max-width: 899px) {
+      .bg-video-container {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+      }
+
+      .banner-text-side {
+        padding: 30px 20px;
+        text-align: center;
+        border-right: none;
+        border-bottom: 1px solid rgba(172, 133, 65, 0.1);
+      }
+
+      .banner-image-side {
+        height: 250px;
+        padding: 0;
+      }
+
+      .synopsis-container {
+        grid-template-columns: 1fr;
+        padding: 80px 8%;
+        text-align: center;
+      }
+
+      .synopsis-content-column {
+        align-items: center;
+      }
+
+      .synopsis-title::after {
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .form-grid,
+      .menu-options {
+        grid-template-columns: 1fr;
+      }
+
+      .floating-asset {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="mosquitinho-canvas"></div>
+
+  <div id="main-wrapper">
+
+    <section class="panel hero-container">
+      <div class="bg-video-container">
+        <div class="banner-text-side">
+          <div>
+            <p class="banner-label">Lançamento Oficial:</p>
+            <p class="banner-info-text">27 de maio, quarta-feira, às 19h30.</p>
+          </div>
+          <div style="margin-top: 30px;">
+            <p class="banner-label">Local do Evento:</p>
+            <p class="banner-info-text">
+              Divino Refúgio Café e Livros<br>
+              R. Belmiro Teixeira Pimenta, 147.<br>
+              Jardim Camburi, Vitória - ES.
+            </p>
+          </div>
+        </div>
+
+        <div class="banner-image-side">
+          <img src="assets/isa-banner.png" alt="Esperança Através das Lágrimas">
+        </div>
+      </div>
+    </section>
+
+    <section class="panel synopsis-container">
+      <div class="synopsis-photo-column">
+        <div class="photo-placeholder">
+          <div class="slider-track" id="slider-track">
+            <div class="slide">
+              <video autoplay muted playsinline class="slide-video">
+                <source src="Olive_trees_fall_202604211519.mp4" type="video/mp4">
+              </video>
+            </div>
+            <div class="slide">
+              <img src="./assets/Mockup 02.jpeg" alt="Amostra 1" class="slide-img">
+            </div>
+            <div class="slide">
+              <img src="./assets/Mockup 03.jpeg" alt="Amostra 2" class="slide-img">
+            </div>
+            <div class="slide">
+              <img src="./assets/Mockup 04.jpeg" alt="Amostra 3" class="slide-img">
+            </div>
+          </div>
+          <div class="slider-arrow arrow-left" id="prev-slide">&#8249;</div>
+          <div class="slider-arrow arrow-right" id="next-slide">&#8250;</div>
+          <div class="slider-dots" id="slider-dots">
+            <div class="dot active" data-index="0"></div>
+            <div class="dot" data-index="1"></div>
+            <div class="dot" data-index="2"></div>
+            <div class="dot" data-index="3"></div>
+          </div>
+        </div>
+
+        <div class="delivery-selection">
+          <p class="form-label" style="margin-bottom: 12px; color: #1a1a1a; font-family: 'Bodoni', serif; font-size: 0.75rem;">Opções de entrega:</p>
+          <label class="radio-option">
+            <input type="radio" name="entrega" value="casa">
+            <span>Receber em casa</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="entrega" value="evento">
+            <span>Retirar no evento de lançamento</span>
+          </label>
+
+          <p class="form-label" style="margin-top: 25px; margin-bottom: 12px; color: #1a1a1a; font-family: 'Bodoni', serif; font-size: 0.75rem;">Você deseja receber:</p>
+          <label class="radio-option">
+            <input type="radio" name="formato" value="fisico">
+            <span>Apenas o livro físico</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="formato" value="kindle">
+            <span>Livro físico + Versão Kindle (Bônus)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="synopsis-content-column">
+        <h2 class="synopsis-title">Esperança Através das Lágrimas • Isabella Oliveira</h2>
+        <p class="synopsis-text">
+          Quando o assunto é abuso sexual, o clima pesa. Um elefante branco é plantado na sala, a conversa é velada, as pessoas ficam constrangidas e, normalmente, pouco se fala. É por isso que eu quero começar te dizendo que, se você não é alguém que sofreu esse tipo de abuso, você, com certeza, conhece alguém que já passou por isso. Na minha experiência — e escutando inúmeras mulheres e homens que já foram abusados —, eu posso te dizer com toda a certeza: a maioria dos casos — principalmente os que ocorrem na infância e adolescência — acontece dentro de casa, e os abusadores são tios, avós, babás, vizinhos, primos, amigos de irmãos, padrastos, madrastas e, inclusive, pais — como foi o meu caso...
+          <span class="read-more-link" id="open-synopsis">Ler mais</span>
+        </p>
+        <div class="book-price">R$ 58,90</div>
+        <div class="button-group" style="flex-direction: column; align-items: center;">
+          <a href="#checkout" id="btn-comprar" class="btn btn-primary disabled" style="width: 100%;">Comprar</a>
+          <p id="btn-hint" style="font-size: 0.75rem; color: #888; margin-top: 10px; font-style: italic; text-align: center;">
+            (Para comprar, selecione todas as opções ao lado e abaixo)
+          </p>
+        </div>
+
+        <div class="delivery-selection" style="margin-top: 30px; max-width: 100%;">
+          <p class="form-label" style="margin-bottom: 12px; color: #1a1a1a; font-family: 'Bodoni', serif; font-size: 0.75rem;">Selecione a quantidade:</p>
+          <label class="radio-option">
+            <input type="radio" name="quantidade" value="1">
+            <span style="font-size: 0.9rem;">01 Unidade: R$ 58,90 <small style="color: #666; font-style: italic;">(Preço promocional de Pré-Venda)</small></span>
+          </label>
+          <label class="radio-option" style="align-items: flex-start;">
+            <input type="radio" name="quantidade" value="2" style="margin-top: 4px;">
+            <span style="font-size: 0.9rem;">02 Unidades: R$ 107,90 <br><small style="color: #666; font-style: italic;">(Combo promocional de Pré-Venda — porque você, com certeza, conhece alguém que já passou por isso.)</small></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section id="checkout" class="panel checkout-container">
+      <!-- ... existing checkout content ... -->
+    </section>
+
+    <!-- MODAL DA SINOPSE -->
+    <div class="modal-overlay" id="synopsis-modal">
+      <div class="modal-card">
+        <span class="close-modal" id="close-synopsis">&times;</span>
+        <h2 class="synopsis-title" style="margin-bottom: 30px;">Esperança Através das Lágrimas</h2>
+        <div class="synopsis-text" style="color: #333; line-height: 1.8;">
+          <p style="margin-bottom: 20px;">
+            Quando o assunto é abuso sexual, o clima pesa. Um elefante branco é plantado na sala, a conversa é velada, as pessoas ficam constrangidas e, normalmente, pouco se fala. É por isso que eu quero começar te dizendo que, se você não é alguém que sofreu esse tipo de abuso, você, com certeza, conhece alguém que já passou por isso.
+          </p>
+          <p style="margin-bottom: 20px;">
+            Na minha experiência — e escutando inúmeras mulheres e homens que já foram abusados —, eu posso te dizer com toda a certeza: a maioria dos casos — principalmente os que ocorrem na infância e adolescência — acontece dentro de casa, e os abusadores são tios, avós, babás, vizinhos, primos, amigos de irmãos, padrastos, madrastas e, inclusive, pais — como foi o meu caso. Mas os abusos sexuais não acontecem somente na infância e adolescência, e quando se chega à vida adulta, os abusadores mais próximos passam a ser, até mesmo, namorados e chefes, por exemplo.
+          </p>
+          <p>
+            E eu não estou te contando isso para te fazer ter medo, ou pensar que não pode confiar em ninguém, porque este extremo não é uma verdade — e nós também vamos falar sobre isso. Eu decidi começar te contando isso para te mostrar que esse trauma está mais próximo do que você imagina — e em mais lugares do que você imagina —, e ele precisa ser enxergado, citado, tocado e curado. E, sim, isso é possível, é possível viver uma vida livre e saudável — sexual, psicológica e emocionalmente —, mesmo depois de se ter sofrido um abuso deste tipo. Existe, sim, esperança através das lágrimas.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+
+      // 2. LÓGICA DAS FLORES (MOSQUITINHOS)
+      const canvas = document.getElementById('mosquitinho-canvas');
+      const flowerData = [];
+      for (let i = 0; i < 20; i++) {
+        const wrapper = document.createElement('div');
+        wrapper.classList.add('flower-wrapper');
+        const flower = document.createElement('div');
+        flower.classList.add('mosquitinho');
+        const size = Math.random() * 25 + 25;
+        wrapper.style.width = `${size}px`; wrapper.style.height = `${size}px`;
+        wrapper.style.left = `${Math.random() * 100}vw`; wrapper.style.top = `${Math.random() * 100}vh`;
+        flower.style.animation = `floatGentle ${Math.random() * 6 + 5}s ease-in-out infinite`;
+        flower.dataset.baseOpacity = Math.random() * 0.4 + 0.5;
+        flower.style.opacity = flower.dataset.baseOpacity;
+        wrapper.appendChild(flower); canvas.appendChild(wrapper);
+        flowerData.push({ wrapper, flower });
+      }
+
+      document.addEventListener('mousemove', (e) => {
+        flowerData.forEach(({ wrapper, flower }) => {
+          const rect = wrapper.getBoundingClientRect();
+          const dist = Math.hypot(e.clientX - (rect.left + rect.width / 2), e.clientY - (rect.top + rect.height / 2));
+          if (dist < 140) {
+            const force = (140 - dist) / 140;
+            wrapper.style.transform = `translate(${(e.clientX - (rect.left + rect.width / 2)) * force * -0.8}px, ${(e.clientY - (rect.top + rect.height / 2)) * force * -0.8}px)`;
+            flower.style.opacity = '1';
+          } else {
+            wrapper.style.transform = `translate(0,0)`;
+            flower.style.opacity = flower.dataset.baseOpacity;
+          }
+        });
+      });
+
+      // 3. LÓGICA DO CHECKOUT CONDICIONAL (RADIO BUTTONS)
+      const btnComprar = document.getElementById('btn-comprar');
+      const radioOptions = document.querySelectorAll('input[name="entrega"], input[name="formato"], input[name="quantidade"]');
+      const btnHint = document.getElementById('btn-hint');
+
+      function validateSelection() {
+        const entrega = document.querySelector('input[name="entrega"]:checked');
+        const formato = document.querySelector('input[name="formato"]:checked');
+        const quantidade = document.querySelector('input[name="quantidade"]:checked');
+
+        if (entrega && formato && quantidade) {
+          btnComprar.classList.remove('disabled');
+          btnHint.style.opacity = '0';
+        } else {
+          btnComprar.classList.add('disabled');
+          btnHint.style.opacity = '1';
+        }
+      }
+
+      radioOptions.forEach(radio => {
+        radio.addEventListener('change', validateSelection);
+      });
+
+      btnComprar.addEventListener('click', (e) => {
+        if (btnComprar.classList.contains('disabled')) {
+          e.preventDefault();
+          return;
+        }
+
+        const entrega = document.querySelector('input[name="entrega"]:checked').value;
+        const formato = document.querySelector('input[name="formato"]:checked').value;
+        const quantidade = document.querySelector('input[name="quantidade"]:checked').value;
+
+        // Constrói a URL dependendo da entrega e passa quantidade/formato
+        let targetUrl = (entrega === 'casa') ? "checkout-casa.html" : "checkout-evento.html";
+        targetUrl += `?qty=${quantidade}&fmt=${formato}`;
+
+        window.location.href = targetUrl;
+      });
+
+      // 4. LÓGICA DO MODAL DA SINOPSE
+      const modal = document.getElementById('synopsis-modal');
+      const openBtn = document.getElementById('open-synopsis');
+      const closeBtn = document.getElementById('close-synopsis');
+
+      openBtn.addEventListener('click', () => {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+
+      closeBtn.addEventListener('click', () => {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      });
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+          document.body.style.overflow = '';
+        }
+      });
+
+      // 4. LÓGICA DO SLIDER MEJORADA
+      const track = document.getElementById('slider-track');
+      const dots = document.querySelectorAll('.dot');
+      const prevBtn = document.getElementById('prev-slide');
+      const nextBtn = document.getElementById('next-slide');
+      const totalSlides = dots.length;
+      let currentIndex = 0;
+
+      function goToSlide(index) {
+        if (index < 0) index = totalSlides - 1;
+        if (index >= totalSlides) index = 0;
+        currentIndex = index;
+
+        // Limpa qualquer resíduo de arrasto manual antes de animar
+        gsap.set(track, { x: 0 });
+
+        gsap.to(track, {
+          xPercent: -100 * currentIndex,
+          duration: 0.2, // Quase instantâneo
+          ease: "none"   // Sem suavidade ("normal")
+        });
+
+        dots.forEach(d => d.classList.remove('active'));
+        if (dots[currentIndex]) dots[currentIndex].classList.add('active');
+      }
+
+      dots.forEach((dot, idx) => {
+        dot.addEventListener('click', () => goToSlide(idx));
+      });
+
+      prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+      nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+    });
+  </script>
+</body>
+
+</html>
