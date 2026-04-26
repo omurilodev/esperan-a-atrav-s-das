@@ -55,6 +55,7 @@
       background-color: #e7e5e0;
       color: #333;
       overflow-x: hidden;
+      font-size: 75%;
     }
 
     body::before {
@@ -87,22 +88,21 @@
       overflow: hidden;
       min-height: auto;
       padding: 30px 0;
+      padding: 22px 0;
       background-color: transparent;
     }
 
     .bg-video-container {
       position: relative;
       width: 100%;
-      max-width: 1250px;
-      height: auto;
-      max-height: 280px;
-      z-index: 10;
-      overflow: hidden;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+      max-width: 1100px;
+      max-height: 210px;
+      background-color: #e7e5e0;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      background-color: #e7e5e0;
-      position: relative;
+      overflow: hidden;
+      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+      border-radius: 2px;
     }
 
     .bg-video-container::before {
@@ -116,28 +116,29 @@
     }
 
     .banner-text-side {
-      padding: 20px 30px 20px 60px;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      border-right: none;
+      padding: 0 45px;
+      position: relative;
+      z-index: 2;
     }
 
     .banner-label {
       font-family: 'Bodoni', serif;
-      font-size: 0.75rem;
-      letter-spacing: 2px;
+      font-size: 0.56rem;
+      letter-spacing: 1.5px;
       color: #ac8541;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       text-transform: uppercase;
     }
 
     .banner-info-text {
       font-family: 'PT Serif', serif;
-      font-size: 1.1rem;
+      font-size: 0.82rem;
       color: #1a1a1a;
       line-height: 1.4;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     .banner-info-text:last-child {
@@ -161,21 +162,21 @@
       height: auto;
       display: block;
       object-fit: contain;
-      margin-top: -40px;
+      margin-top: -30px;
       align-self: flex-start;
     }
 
     .hero-text-wrapper {
       width: 100%;
-      max-width: 500px;
+      max-width: 375px;
     }
 
     .hero-divider {
       width: 100%;
-      max-width: 250px;
+      max-width: 187px;
       height: 2px;
       background: linear-gradient(to left, #ac8541, #e4cc98);
-      margin: 25px auto;
+      margin: 19px auto;
       border-radius: 2px;
     }
 
@@ -191,44 +192,44 @@
        ========================================= */
     .synopsis-container {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 60px;
-      padding: 60px 8%;
+      grid-template-columns: 360px 1fr;
+      align-items: start;
+      gap: 50px;
+      padding: 34px 6%;
       background-color: #fcfcf9;
       position: relative;
-      max-width: 1250px;
-      margin: 40px auto 80px;
+      max-width: 1100px;
+      margin: 10px auto 60px;
       border-radius: 0;
-      box-shadow: 0 40px 100px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 30px 75px rgba(0, 0, 0, 0.15);
     }
 
     .photo-placeholder {
       width: 100%;
-      max-width: 380px;
+      max-width: 360px;
       aspect-ratio: 3/4;
       background: linear-gradient(135deg, #EBE9E1 0%, #D8D5C8 100%);
       border: 1px solid rgba(197, 160, 89, 0.3);
       position: relative;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
       border-radius: 0;
       overflow: hidden;
     }
 
     .delivery-selection {
-      margin: 25px 0 0;
+      margin: 19px 0 0;
       text-align: left;
-      max-width: 380px;
+      max-width: 360px;
       font-family: 'PT Serif', serif;
     }
 
     .radio-option {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
+      gap: 9px;
+      margin-bottom: 9px;
       cursor: pointer;
-      font-size: 0.95rem;
+      font-size: 0.71rem;
       color: #333;
       transition: color 0.3s ease;
     }
@@ -239,8 +240,8 @@
 
     .radio-option input[type="radio"] {
       appearance: none;
-      width: 8px;
-      height: 8px;
+      width: 6px;
+      height: 6px;
       border: 1px solid #d8d5c8;
       border-radius: 50%;
       cursor: pointer;
@@ -258,8 +259,8 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 6px;
-      height: 6px;
+      width: 4px;
+      height: 4px;
       background-color: #C5A059;
       border-radius: 50%;
     }
@@ -293,17 +294,17 @@
 
     .slider-dots {
       position: absolute;
-      bottom: 15px;
+      bottom: 11px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 10px;
+      gap: 7px;
       z-index: 10;
     }
 
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background-color: rgba(255, 255, 255, 0.4);
       cursor: pointer;
@@ -319,11 +320,11 @@
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 40px;
-      height: 40px;
+      width: 30px;
+      height: 30px;
       background: rgba(197, 160, 89, 0.2);
       backdrop-filter: blur(5px);
-      border: 1px solid rgba(197, 160, 89, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.4);
       color: #fff;
       display: flex;
       align-items: center;
@@ -331,7 +332,7 @@
       cursor: pointer;
       border-radius: 50%;
       z-index: 15;
-      font-size: 1.2rem;
+      font-size: 0.9rem;
       transition: all 0.3s ease;
       user-select: none;
     }
@@ -349,9 +350,13 @@
       right: 15px;
     }
 
+    .synopsis-content-column {
+      padding-top: 15px;
+    }
+
     .synopsis-title {
-      font-size: 1.8rem;
-      margin-bottom: 25px;
+      font-size: 1.75rem;
+      margin-bottom: 19px;
       color: #1a1a1a;
       position: relative;
     }
@@ -367,16 +372,16 @@
     }
 
     .synopsis-text {
-      font-size: 1.05rem;
-      line-height: 1.8;
+      font-size: 0.8rem;
+      line-height: 1.7;
       color: #555;
-      margin-bottom: 25px;
+      margin-bottom: 19px;
     }
 
     .book-price {
-      font-size: 1.8rem;
+      font-size: 1.35rem;
       color: #C5A059;
-      margin-bottom: 30px;
+      margin-bottom: 22px;
     }
 
     .button-group {
@@ -387,9 +392,9 @@
     }
 
     .btn {
-      padding: 15px 25px;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
+      padding: 11px 19px;
+      font-size: 0.64rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
       border-radius: 2px;
@@ -429,17 +434,9 @@
     /* =========================================
        3. SEÇÃO DE CHECKOUT (O NOVO)
        ========================================= */
-    .checkout-container {
-      background-color: #F8F7F4;
-      padding: 100px 8%;
-      display: none;
-      /* Escondido inicialmente */
-      justify-content: center;
-      opacity: 0;
-    }
 
     .checkout-wrapper {
-      max-width: 800px;
+      max-width: 600px;
       width: 100%;
     }
 
@@ -544,57 +541,6 @@
       }
     }
 
-    /* =========================================
-       POPUP DA SINOPSE
-       ========================================= */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(4px);
-      z-index: 1000;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-card {
-      background-color: #fcfcf9;
-      width: 90%;
-      max-width: 800px;
-      max-height: 85vh;
-      padding: 50px;
-      position: relative;
-      overflow-y: auto;
-      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.3);
-      transform: translateY(20px);
-      transition: transform 0.3s ease;
-    }
-
-    .modal-overlay.active {
-      display: flex;
-      opacity: 1;
-    }
-
-    .modal-overlay.active .modal-card {
-      transform: translateY(0);
-    }
-
-    .close-modal {
-      position: absolute;
-      top: 20px;
-      right: 25px;
-      font-size: 2rem;
-      cursor: pointer;
-      color: #999;
-      transition: color 0.3s;
-    }
-
-    .close-modal:hover {
-      color: #C5A059;
-    }
 
     .read-more-link {
       color: #C5A059;
@@ -743,9 +689,18 @@
 
       <div class="synopsis-content-column">
         <h2 class="synopsis-title">Esperança Através das Lágrimas • Isabella Oliveira</h2>
-        <p class="synopsis-text">
-          Quando o assunto é abuso sexual, o clima pesa. Um elefante branco é plantado na sala, a conversa é velada, as pessoas ficam constrangidas e, normalmente, pouco se fala. É por isso que eu quero começar te dizendo que, se você não é alguém que sofreu esse tipo de abuso, você, com certeza, conhece alguém que já passou por isso. Na minha experiência — e escutando inúmeras mulheres e homens que já foram abusados —, eu posso te dizer com toda a certeza: a maioria dos casos — principalmente os que ocorrem na infância e adolescência — acontece dentro de casa, e os abusadores são tios, avós, babás, vizinhos, primos, amigos de irmãos, padrastos, madrastas e, inclusive, pais — como foi o meu caso...
-          <span class="read-more-link" id="open-synopsis">Ler mais</span>
+        <p class="synopsis-text" id="synopsis-container">
+          <span id="synopsis-teaser">
+            Quando o assunto é abuso sexual, o clima pesa. Um elefante branco é plantado na sala, a conversa é velada, as pessoas ficam constrangidas e, normalmente, pouco se fala. É por isso que eu quero começar te dizendo que, se você não é alguém que sofreu esse tipo de abuso, você, com certeza, conhece alguém que já passou por isso...
+          </span>
+          <span id="synopsis-full-content" style="display: none; margin-top: 0;">
+            Quando o assunto é abuso sexual, o clima pesa. Um elefante branco é plantado na sala, a conversa é velada, as pessoas ficam constrangidas e, normalmente, pouco se fala. É por isso que eu quero começar te dizendo que, se você não é alguém que sofreu esse tipo de abuso, você, com certeza, conhece alguém que já passou por isso.
+            <br><br>
+            Na minha experiência — e escutando inúmeras mulheres e homens que já foram abusados —, eu posso te dizer com toda a certeza: a maioria dos casos — principalmente os que ocorrem na infância e adolescência — acontece dentro de casa, e os abusadores são tios, avós, babás, vizinhos, primos, amigos de irmãos, padrastos, madrastas e, inclusive, pais — como foi o meu caso. Mas os abusos sexuais não acontecem somente na infância e adolescência, e quando se chega à vida adulta, os abusadores mais próximos passam a ser, até mesmo, namorados e chefes, por exemplo.
+            <br><br>
+            E eu não estou te contando isso para te fazer ter medo, ou pensar que não pode confiar em ninguém, porque este extremo não é uma verdade — e nós também vamos falar sobre isso. Eu decidi começar te contando isso para te mostrar que esse trauma está mais próximo do que você imagina — e em mais lugares do que você imagina —, e ele precisa ser enxergado, citado, tocado e curado. E, sim, isso é possível, é possível viver uma vida livre e saudável — sexual, psicológica e emocionalmente —, mesmo depois de se ter sofrido um abuso deste tipo. Existe, sim, esperança através das lágrimas.
+          </span>
+          <span class="read-more-link" id="toggle-synopsis" style="display: block; margin-top: 15px;">Continuar lendo</span>
         </p>
         <div class="book-price">R$ 58,90</div>
         <div class="button-group" style="flex-direction: column; align-items: center;">
@@ -773,24 +728,6 @@
       <!-- ... existing checkout content ... -->
     </section>
 
-    <!-- MODAL DA SINOPSE -->
-    <div class="modal-overlay" id="synopsis-modal">
-      <div class="modal-card">
-        <span class="close-modal" id="close-synopsis">&times;</span>
-        <h2 class="synopsis-title" style="margin-bottom: 30px;">Esperança Através das Lágrimas</h2>
-        <div class="synopsis-text" style="color: #333; line-height: 1.8;">
-          <p style="margin-bottom: 20px;">
-            Quando o assunto é abuso sexual, o clima pesa. Um elefante branco é plantado na sala, a conversa é velada, as pessoas ficam constrangidas e, normalmente, pouco se fala. É por isso que eu quero começar te dizendo que, se você não é alguém que sofreu esse tipo de abuso, você, com certeza, conhece alguém que já passou por isso.
-          </p>
-          <p style="margin-bottom: 20px;">
-            Na minha experiência — e escutando inúmeras mulheres e homens que já foram abusados —, eu posso te dizer com toda a certeza: a maioria dos casos — principalmente os que ocorrem na infância e adolescência — acontece dentro de casa, e os abusadores são tios, avós, babás, vizinhos, primos, amigos de irmãos, padrastos, madrastas e, inclusive, pais — como foi o meu caso. Mas os abusos sexuais não acontecem somente na infância e adolescência, e quando se chega à vida adulta, os abusadores mais próximos passam a ser, até mesmo, namorados e chefes, por exemplo.
-          </p>
-          <p>
-            E eu não estou te contando isso para te fazer ter medo, ou pensar que não pode confiar em ninguém, porque este extremo não é uma verdade — e nós também vamos falar sobre isso. Eu decidi começar te contando isso para te mostrar que esse trauma está mais próximo do que você imagina — e em mais lugares do que você imagina —, e ele precisa ser enxergado, citado, tocado e curado. E, sim, isso é possível, é possível viver uma vida livre e saudável — sexual, psicológica e emocionalmente —, mesmo depois de se ter sofrido um abuso deste tipo. Existe, sim, esperança através das lágrimas.
-          </p>
-        </div>
-      </div>
-    </div>
 
   </div>
 
@@ -871,25 +808,24 @@
         window.location.href = targetUrl;
       });
 
-      // 4. LÓGICA DO MODAL DA SINOPSE
-      const modal = document.getElementById('synopsis-modal');
-      const openBtn = document.getElementById('open-synopsis');
-      const closeBtn = document.getElementById('close-synopsis');
+      // 4. LÓGICA DO "LER MAIS" INLINE
+      const toggleBtn = document.getElementById('toggle-synopsis');
+      const fullContent = document.getElementById('synopsis-full-content');
+      const teaser = document.getElementById('synopsis-teaser');
 
-      openBtn.addEventListener('click', () => {
-        modal.classList.add('active');
-        document.body.style.overflow = 'hidden';
-      });
-
-      closeBtn.addEventListener('click', () => {
-        modal.classList.remove('active');
-        document.body.style.overflow = '';
-      });
-
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.classList.remove('active');
-          document.body.style.overflow = '';
+      toggleBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const isHidden = fullContent.style.display === 'none';
+        
+        if (isHidden) {
+          fullContent.style.display = 'block';
+          teaser.style.display = 'none';
+          toggleBtn.innerText = 'Ler menos';
+          gsap.from(fullContent, { opacity: 0, scale: 0.98, duration: 0.5, ease: "power2.out" });
+        } else {
+          fullContent.style.display = 'none';
+          teaser.style.display = 'inline';
+          toggleBtn.innerText = 'Continuar lendo';
         }
       });
 
