@@ -379,19 +379,19 @@
       <p class="form-label">Escolha a sua opção de brunch</p>
       <div class="menu-options">
         <label class="menu-card">
-          <input type="radio" name="prato" value="brunch_individual" data-preco="39.90" checked>
+          <input type="radio" name="prato" value="brunch_individual" data-preco="41.90" checked>
           <img src="./assets/1.png" alt="Brunch Individual" class="card-img">
           <span class="card-content" style="padding-top: 45px;">
-            <strong>Brunch Individual: R$ 39,90</strong>
+            <strong>Brunch Individual: R$ 41,90</strong>
             <small>01 fatia de pão brioche artesanal tostado com manteiga, 01 ovo, 01 fatia de bacon, sourcream, 02 panquecas com maple syrup, 01 bolo caseiro de laranja com calda.</small>
           </span>
         </label>
 
         <label class="menu-card">
-          <input type="radio" name="prato" value="brunch_individual_plus" data-preco="74.90">
+          <input type="radio" name="prato" value="brunch_individual_plus" data-preco="78.90">
           <img src="./assets/2.png" alt="Brunch Individual Plus" class="card-img">
           <span class="card-content">
-            <strong>Brunch Individual <br> Plus: R$ 74,90</strong>
+            <strong>Brunch Individual <br> Plus: R$ 78,90</strong>
             <small>01 croissant de fermentação natural artesanal, 01 ovo, 01 fatia de bacon, sourcream, tomate confit, pasta de abacate, 02 panquecas com maple syrup, 01 bolo caseiro de laranja.</small>
           </span>
         </label>
@@ -418,11 +418,11 @@
     const qty = params.get('qty') || '1';
     const fmt = params.get('fmt') || 'fisico';
 
-    let basePrice = (qty === '2') ? 107.90 : 58.90;
+    let basePrice = (qty === '2') ? 113.90 : 61.90;
     let bookName = (qty === '2') ? "Combo 02 Livros (Pré-Venda)" : "01 Livro (Pré-Venda)";
     if (fmt === 'kindle') bookName += " + Ebook Kindle (Grátis)";
 
-    let precoPratoAtual = 39.90; // Valor inicial (Brunch Individual)
+    let precoPratoAtual = 41.90; // Valor inicial (Brunch Individual)
     let totalAtual = basePrice + precoPratoAtual;
 
     // Função para atualizar o resumo no HTML

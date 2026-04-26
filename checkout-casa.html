@@ -180,11 +180,11 @@
   const qty = params.get('qty') || '1';
   const fmt = params.get('fmt') || 'fisico';
   
-  let basePrice = (qty === '2') ? 107.90 : 58.90;
+  let basePrice = (qty === '2') ? 113.90 : 61.90;
   let bookName = (qty === '2') ? "Combo 02 Livros (Pré-Venda)" : "01 Livro (Pré-Venda)";
   if (fmt === 'kindle') bookName += " + Ebook Kindle (Grátis)";
   
-  const valorFrete = 16.00;
+  const valorFrete = 16.90;
   const totalGeral = basePrice + valorFrete;
 
   const bookLabel = 'Livro físico';
