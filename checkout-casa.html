@@ -39,7 +39,25 @@
 }
     input:focus { border-color: #C5A059; }
     
-    .order-summary { background: #f0eee9; padding: 20px; margin-top: 25px; border-radius: 2px; border: 1px dashed #C5A059; }
+    .order-summary {
+      padding: 0;
+      margin-top: 45px;
+      background: transparent;
+      border: none;
+    }
+
+    .summary-header {
+      font-family: 'Bodoni', serif;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      color: #C5A059;
+      display: block;
+      border-bottom: 1px solid #d8d5c8;
+      padding-bottom: 10px;
+    }
+
     .summary-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
     .summary-total { border-top: 1px solid #d8d5c8; padding-top: 10px; font-weight: bold; color: #1a1a1a; font-size: 1.1rem; margin-bottom: 0; }
 
@@ -58,8 +76,19 @@
     .back-button svg { width: 16px; height: 16px; }
 
     @media (max-width: 768px) {
+      .checkout-container { margin: 30px 20px; padding: 40px 30px; }
       .form-grid { grid-template-columns: 1fr; }
-      .checkout-container { margin: 20px; padding: 30px; }
+      .back-button { top: 20px; left: 20px; padding: 8px 15px; font-size: 0.65rem; }
+    }
+
+    @media (max-width: 480px) {
+      .checkout-container { margin: 15px 10px; padding: 30px 20px; }
+      .synopsis-title { font-size: 1.5rem; }
+      .form-label { margin: 20px 0 10px; font-size: 0.75rem; }
+      #form-casa input { padding: 12px 15px; font-size: 0.9rem; }
+      .summary-header { font-size: 0.7rem; }
+      .summary-line { font-size: 0.85rem; }
+      .btn { padding: 12px 15px; font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -78,6 +107,7 @@
     <div class="form-grid">
       <input type="text" id="nome" placeholder="Nome Completo" required>
       <input type="tel" id="telefone" placeholder="WhatsApp (DDD + Número)" required>
+      <input type="email" id="email" placeholder="E-mail" required style="grid-column: span 2;">
     </div>
 
     <p class="form-label">Endereço de Envio</p>
@@ -90,13 +120,9 @@
       <input type="text" id="complemento" placeholder="Complemento (Opcional)">
     </div>
 
-    <div class="order-summary">
-      <div class="summary-line"><span>Livro (Esperança Através das Lágrimas):</span> <span>R$ 67,90</span></div>
-      <div class="summary-line"><span>Frete Fixo:</span> <span>R$ 15,00</span></div>
-      <div class="summary-line summary-total"><span>Total:</span> <span>R$ 82,90</span></div>
-    </div>
+    <div class="order-summary"></div>
 
-    <button type="submit" class="btn" id="btn-confirmar">Confirmar e Ir para Pagamento</button>
+    <button type="submit" class="btn" id="btn-confirmar">Confirmar e ir para pagamento</button>
   </form>
 
   <div id="paymentBrick_container"></div>
@@ -118,14 +144,29 @@
   const valorFrete = 16.00;
   const totalGeral = basePrice + valorFrete;
 
+  const bookLabel = qty === '2' ? 'Livros físicos' : 'Livro físico';
+
   // Atualiza o resumo do pedido no HTML
   const summaryContainer = document.querySelector('.order-summary');
   summaryContainer.innerHTML = `
-    <div class="summary-line"><span>${bookName}:</span> <span>R$ ${basePrice.toFixed(2).replace('.', ',')}</span></div>
-    ${qty === '2' ? '<div style="font-size: 0.75rem; color: #666; margin-top: -5px; margin-bottom: 10px; font-style: italic;">(Combo promocional de Pré-Venda — porque você, com certeza, conhece alguém que já passou por isso.)</div>' : ''}
-    ${fmt === 'kindle' ? '<div style="font-size: 0.75rem; color: #C5A059; margin-top: -5px; margin-bottom: 10px; font-style: italic;">+ Versão Kindle inclusa de graça</div>' : ''}
-    <div class="summary-line"><span>Frete Fixo:</span> <span>R$ 16,00</span></div>
-    <div class="summary-line summary-total"><span>Total:</span> <span>R$ ${totalGeral.toFixed(2).replace('.', ',')}</span></div>
+    <span class="summary-header">Carrinho da Compra</span>
+    <div class="summary-line">
+      <span>${qty.padStart(2, '0')} Esperança Através das Lágrimas • ${bookLabel}</span>
+      <span>R$ ${basePrice.toFixed(2).replace('.', ',')}</span>
+    </div>
+    ${fmt === 'kindle' ? `
+    <div class="summary-line">
+      <span>01 Esperança Através das Lágrimas • Versão Kindle</span>
+      <span style="font-style: italic;">Grátis</span>
+    </div>` : ''}
+    <div class="summary-line">
+      <span>Frete Fixo <span style="font-size: 0.82rem; font-style: italic; opacity: 0.8; margin-left: 5px;">(Os envios acontecerão no dia 27 de maio).</span></span>
+      <span>R$ ${valorFrete.toFixed(2).replace('.', ',')}</span>
+    </div>
+    <div class="summary-line summary-total" style="margin-top: 20px;">
+      <span>Total:</span>
+      <span>R$ ${totalGeral.toFixed(2).replace('.', ',')}</span>
+    </div>
   `;
 
   document.getElementById('form-casa').addEventListener('submit', (e) => {
@@ -155,7 +196,7 @@
           
           const nomeCliente = document.getElementById('nome').value;
           const telefoneCliente = document.getElementById('telefone').value.replace(/\D/g, '');
-          const emailTecnico = `${telefoneCliente}@venda.com.br`;
+          const emailCliente = document.getElementById('email').value;
 
           const endereco = {
             cep: document.getElementById('cep').value,
@@ -172,13 +213,14 @@
             payment_method_id: formData.payment_method_id,
             installments: formData.installments,
             payer: { 
-                email: emailTecnico, 
+                email: emailCliente, 
                 identification: formData.payer ? formData.payer.identification : null 
             },
             metadata: { 
                 tipo_entrega: "casa", 
                 nome: nomeCliente,
                 telefone: telefoneCliente,
+                email: emailCliente,
                 quantidade: qty,
                 formato: fmt,
                 ...endereco
