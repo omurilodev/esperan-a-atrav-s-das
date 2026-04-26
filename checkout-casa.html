@@ -39,6 +39,8 @@
 }
     input:focus { border-color: #C5A059; }
     
+    #email { grid-column: span 2; }
+    
     .order-summary {
       padding: 0;
       margin-top: 45px;
@@ -75,10 +77,12 @@
     .back-button:hover { color: #1a1a1a; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
     .back-button svg { width: 16px; height: 16px; }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .checkout-container { margin: 30px 20px; padding: 40px 30px; }
       .form-grid { grid-template-columns: 1fr; }
+      #email { grid-column: 1; }
       .back-button { top: 20px; left: 20px; padding: 8px 15px; font-size: 0.65rem; }
+      .summary-line { font-size: 0.85rem; }
     }
 
     @media (max-width: 480px) {
@@ -87,7 +91,7 @@
       .form-label { margin: 20px 0 10px; font-size: 0.75rem; }
       #form-casa input { padding: 12px 15px; font-size: 0.9rem; }
       .summary-header { font-size: 0.7rem; }
-      .summary-line { font-size: 0.85rem; }
+      .summary-line { font-size: 0.78rem; line-height: 1.4; }
       .btn { padding: 12px 15px; font-size: 0.8rem; }
     }
   </style>
@@ -107,7 +111,7 @@
     <div class="form-grid">
       <input type="text" id="nome" placeholder="Nome Completo" required>
       <input type="tel" id="telefone" placeholder="WhatsApp (DDD + Número)" required>
-      <input type="email" id="email" placeholder="E-mail" required style="grid-column: span 2;">
+      <input type="email" id="email" placeholder="E-mail" required>
     </div>
 
     <p class="form-label">Endereço de Envio</p>

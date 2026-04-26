@@ -106,6 +106,10 @@
       border-color: #C5A059;
     }
 
+    #email {
+      grid-column: span 2;
+    }
+
     .menu-options {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -289,11 +293,13 @@
       font-family: monospace;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .checkout-container { margin: 30px 20px; padding: 40px 30px; }
       .form-grid, .menu-options { grid-template-columns: 1fr; gap: 20px; }
+      #email { grid-column: 1; }
       .back-button { top: 20px; left: 20px; padding: 8px 15px; font-size: 0.65rem; }
       .card-img { height: 250px; }
+      .summary-line { font-size: 0.85rem; }
     }
 
     @media (max-width: 480px) {
@@ -305,7 +311,7 @@
       .card-content strong { font-size: 0.8rem; }
       .card-content small { font-size: 0.68rem; }
       .summary-header { font-size: 0.7rem; }
-      .summary-line { font-size: 0.85rem; }
+      .summary-line { font-size: 0.78rem; line-height: 1.4; }
       .btn { padding: 12px 15px; font-size: 0.8rem; }
     }
   </style>
@@ -328,7 +334,7 @@
       <div class="form-grid">
         <input type="text" id="nome" placeholder="Nome Completo" required>
         <input type="tel" id="telefone" placeholder="WhatsApp (DDD + Número)" required>
-        <input type="email" id="email" placeholder="E-mail" required style="grid-column: span 2;">
+        <input type="email" id="email" placeholder="E-mail" required>
       </div>
 
       <p class="form-label">Escolha a sua opção de brunch</p>
