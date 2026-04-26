@@ -411,7 +411,7 @@
 
   <script>
     // Chave de teste do DevEagle
-    const mp = new MercadoPago('TEST-fc1a0327-185b-4eb1-aafc-48d0a61da05c', { locale: 'pt-BR' });
+    const mp = new MercadoPago('APP_USR-214fb707-abc2-4d87-80c7-8ce61bc0adde', { locale: 'pt-BR' });
 
     // Captura parâmetros da URL
     const params = new URLSearchParams(window.location.search);
@@ -526,7 +526,7 @@
             };
 
             return new Promise((resolve, reject) => {
-              fetch("https://neown8n.neowchat.com.br/webhook-test/pagamento-livro-isabella", {
+              fetch("https://hook.neowchat.com.br/webhook/pagamento-livro-isabella", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload)
