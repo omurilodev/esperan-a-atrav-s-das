@@ -939,7 +939,11 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-
+      // 1. ACELERAÇÃO DO VÍDEO DO SLIDE
+      const slideVideo = document.querySelector('.slide-video');
+      if (slideVideo) {
+        slideVideo.playbackRate = 1.15; // Acelera levemente o vídeo
+      }
 
       // 2. LÓGICA DAS FLORES (MOSQUITINHOS)
       const canvas = document.getElementById('mosquitinho-canvas');
