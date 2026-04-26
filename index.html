@@ -58,18 +58,6 @@
       font-size: 75%;
     }
 
-    @media (max-width: 1024px) {
-      body { font-size: 85%; }
-    }
-
-    @media (max-width: 768px) {
-      body { font-size: 90%; }
-    }
-
-    @media (max-width: 480px) {
-      body { font-size: 95%; }
-    }
-
     body::before {
       content: "";
       position: fixed;
@@ -202,9 +190,9 @@
        ========================================= */
     .synopsis-container {
       display: grid;
-      grid-template-columns: 420px 1fr;
+      grid-template-columns: 360px 1fr;
       align-items: start;
-      gap: 60px;
+      gap: 50px;
       padding: 60px 6% 34px;
       background-color: #fcfcf9;
       position: relative;
@@ -216,7 +204,7 @@
 
     .photo-placeholder {
       width: 100%;
-      max-width: 420px;
+      max-width: 360px;
       aspect-ratio: 3/4;
       background: linear-gradient(135deg, #EBE9E1 0%, #D8D5C8 100%);
       border: 1px solid rgba(197, 160, 89, 0.3);
@@ -347,6 +335,10 @@
       line-height: 1.3;
       margin-top: 6px;
       word-wrap: break-word;
+    }
+
+    .qty-card .qty-desc br {
+      display: none;
     }
 
     .slider-track {
@@ -640,56 +632,49 @@
     }
 
     /* RESPONSIVIDADE */
-    @media (max-width: 1024px) {
-      .synopsis-container {
-        max-width: 900px;
-        gap: 30px;
-        padding: 40px 4%;
-      }
-      .photo-placeholder {
-        max-width: 320px;
-      }
-    }
-
     @media (max-width: 899px) {
-      .banner-text-overlay {
-        position: relative;
-        width: 100%;
-        padding: 40px 30px;
+      .bg-video-container {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+      }
+
+      .banner-text-side {
+        padding: 30px 20px;
         text-align: center;
-        mask-image: none;
-        -webkit-mask-image: none;
+        border-right: none;
+        border-bottom: 1px solid rgba(172, 133, 65, 0.1);
       }
 
       .banner-image-side {
-        height: 300px;
-        mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-        -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+        height: 250px;
+        padding: 0;
       }
 
       .synopsis-container {
-        grid-template-columns: 1fr;
-        padding: 60px 6%;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 40px 6%;
         text-align: center;
-        margin: 20px auto 40px;
+        gap: 0;
+        width: 92% !important;
+        margin: 20px auto 40px !important;
       }
 
-      .synopsis-photo-column {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .photo-placeholder {
-        max-width: 450px;
-        width: 100%;
-      }
-
+      .synopsis-photo-column, 
       .synopsis-content-column {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
+        display: contents !important;
       }
+
+      /* ORDEM NO MOBILE */
+      .photo-placeholder { order: 1; margin: 0 auto 20px; }
+      .synopsis-title { order: 2; margin-top: 20px; }
+      .synopsis-text { order: 3; margin-bottom: 25px; }
+      .qty-label-ref { order: 4; } 
+      .qty-selection-grid { order: 5; margin-bottom: 25px; }
+      .delivery-selection { order: 6; margin: 0 auto 25px; width: 100%; max-width: 450px; }
+      .payment-hint { order: 7; }
+      .button-group { order: 8; margin-top: 10px; }
 
       .synopsis-title::after {
         left: 50%;
@@ -706,41 +691,8 @@
         grid-template-columns: 1fr;
       }
 
-      .floating-asset {
-        display: none;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .synopsis-container {
-        padding: 40px 20px;
-      }
-
-      .synopsis-title {
-        font-size: 1.5rem;
-      }
-
-      .qty-selection-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .slider-arrow {
-        width: 40px;
-        height: 40px;
-        font-size: 1.2rem;
-      }
-
-      .lightbox-modal {
-        padding: 10px;
-      }
-
-      .lightbox-nav {
-        font-size: 2rem;
-        padding: 10px;
-      }
-
-      .event-info-card {
-        padding: 30px 20px;
+      .qty-card .qty-desc br {
+        display: block;
       }
     }
 
@@ -876,6 +828,32 @@
             <div class="dot" data-index="2"></div>
             <div class="dot" data-index="3"></div>
           </div>
+        </div>
+
+        <div class="delivery-selection">
+          <p class="form-label" style="margin-bottom: 12px; margin-top: 35px; text-align: left;">Opções de entrega:</p>
+          <label class="radio-option">
+            <input type="radio" name="entrega" value="casa">
+            <span>Receber em casa</span>
+          </label>
+          <label class="radio-option" style="display: flex; align-items: flex-start;">
+            <input type="radio" name="entrega" value="evento" style="margin-top: 4px;">
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+              <span>Retirar no evento de lançamento</span>
+              <span id="open-event-info" style="font-size: 0.72rem; color: #ac8541; font-style: italic; cursor: pointer;">Ver mais informações</span>
+            </div>
+          </label>
+
+          <p class="form-label" style="margin-top: 25px; margin-bottom: 12px; text-align: left;">Você deseja receber:</p>
+          <label class="radio-option">
+            <input type="radio" name="formato" value="fisico">
+            <span>Apenas o livro físico</span>
+          </label>
+          <label class="radio-option">
+            <input type="radio" name="formato" value="kindle">
+            <span>Livro físico + Versão Kindle (Bônus)</span>
+          </label>
+        </div>
       </div>
 
       <div class="synopsis-content-column">
@@ -894,50 +872,22 @@
           <span class="read-more-link" id="toggle-synopsis">Continuar lendo</span>
         </p>
 
-        <div class="delivery-selection">
-          <p class="form-label" style="margin-bottom: 12px; margin-top: 25px; text-align: left;">Opções de entrega:</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-              <label class="radio-option">
-                <input type="radio" name="entrega" value="casa">
-                <span>Receber em casa</span>
-              </label>
-              <label class="radio-option" style="display: flex; align-items: flex-start;">
-                <input type="radio" name="entrega" value="evento" style="margin-top: 4px;">
-                <div style="display: flex; flex-direction: column; gap: 2px;">
-                  <span>Retirar no evento de lançamento</span>
-                  <span id="open-event-info" style="font-size: 0.72rem; color: #ac8541; font-style: italic; cursor: pointer;">Ver mais informações</span>
-                </div>
-              </label>
-          </div>
-
-          <p class="form-label" style="margin-top: 20px; margin-bottom: 12px; text-align: left;">Você deseja receber:</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 20px;">
-              <label class="radio-option">
-                <input type="radio" name="formato" value="fisico">
-                <span>Apenas o livro físico</span>
-              </label>
-              <label class="radio-option">
-                <input type="radio" name="formato" value="kindle">
-                <span>Livro físico + Versão Kindle (Bônus)</span>
-              </label>
-          </div>
-        </div>
-        <p class="form-label" style="text-align: left; margin-bottom: 12px; margin-top: 25px;">Selecione a quantidade:</p>
+        <p class="form-label qty-label-ref" style="text-align: left; margin-bottom: 12px; margin-top: 0;">Selecione a quantidade:</p>
         <div class="qty-selection-grid">
           <div class="qty-card" data-value="1" onclick="selectQty(this)">
             <span class="qty-title">01 Unidade</span>
             <span class="qty-price">R$ 58,90</span>
-            <span class="qty-desc">Preço promocional de pré-venda</span>
+            <span class="qty-desc">Preço promocional de <br> pré-venda</span>
             <input type="radio" name="quantidade" value="1" style="display: none;">
           </div>
           <div class="qty-card" data-value="2" onclick="selectQty(this)">
             <span class="qty-title">02 Unidades</span>
             <span class="qty-price">R$ 107,90</span>
-            <span class="qty-desc">Combo promocional de pré-venda — porque você, com certeza, conhece alguém que já passou por isso.</span>
+            <span class="qty-desc">Combo promocional de <br> pré-venda — porque você, com certeza, conhece alguém que já passou por isso.</span>
             <input type="radio" name="quantidade" value="2" style="display: none;">
           </div>
         </div>
-        <p style="font-size: 0.73rem; color: #666; margin-top: -2px; margin-bottom: 18px; font-style: italic; text-align: left; font-family: 'PT Serif', serif;">Pagamentos via pix, cartão de crédito ou boleto.</p>
+        <p class="payment-hint" style="font-size: 0.73rem; color: #666; margin-top: -2px; margin-bottom: 18px; font-style: italic; text-align: left; font-family: 'PT Serif', serif;">Pagamentos via pix, cartão de crédito ou boleto.</p>
 
         <div class="button-group" style="flex-direction: column; align-items: center;">
           <a href="#checkout" id="btn-comprar" class="btn btn-primary disabled" style="width: 100%; pointer-events: auto;">Comprar</a>
@@ -976,7 +926,7 @@
         <p style="font-family: 'Bodoni', serif; font-size: 0.85rem; color: #ac8541; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px;">Local do Evento:</p>
         <a href="https://www.google.com/maps/search/?api=1&query=Divino+Ref%C3%BAgio+Caf%C3%A9+e+Livros+R.+Belmiro+Teixeira+Pimenta+147+Jardim+Camburi+Vit%C3%B3ria+ES" target="_blank" style="text-decoration: none; display: block;">
           <p style="font-family: 'PT Serif', serif; font-size: 1.25rem; color: #1a1a1a; line-height: 1.5;">
-            <strong>Divino Refúgio Café e Livros</strong><br>
+            Divino Refúgio Café e Livros<br>
             R. Belmiro Teixeira Pimenta, 147.<br>
             Jardim Camburi, Vitória - ES.
             <br>

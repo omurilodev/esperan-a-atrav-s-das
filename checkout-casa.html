@@ -60,7 +60,31 @@
       padding-bottom: 10px;
     }
 
-    .summary-line { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem; }
+    .summary-line { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center;
+      margin-bottom: 12px; 
+      font-size: 0.95rem; 
+    }
+
+    .item-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        line-height: 1.4;
+    }
+
+    .item-detail::before {
+        content: " • ";
+    }
+
+    .item-detail {
+        font-size: 0.85em;
+        opacity: 0.8;
+        font-style: italic;
+    }
     .summary-total { border-top: 1px solid #d8d5c8; padding-top: 10px; font-weight: bold; color: #1a1a1a; font-size: 1.1rem; margin-bottom: 0; }
 
     .btn { padding: 15px 25px; font-size: 0.85rem; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; border-radius: 2px; transition: all 0.4s; text-decoration: none; display: block; width: 100%; text-align: center; margin-top: 30px; background-color: #1a1a1a; color: #fff; border: 1px solid #1a1a1a; }
@@ -91,7 +115,22 @@
       .form-label { margin: 20px 0 10px; font-size: 0.75rem; }
       #form-casa input { padding: 12px 15px; font-size: 0.9rem; }
       .summary-header { font-size: 0.7rem; }
-      .summary-line { font-size: 0.78rem; line-height: 1.4; }
+      .summary-line { 
+        font-size: 0.78rem; 
+        line-height: 1.4; 
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left; 
+        gap: 15px; 
+      }
+      .item-info { flex-direction: column; align-items: flex-start; flex: 1; gap: 0; }
+      .item-detail::before { content: ""; }
+      .summary-line .item-price { 
+        width: auto; 
+        text-align: right; 
+        font-weight: bold;
+      }
       .btn { padding: 12px 15px; font-size: 0.8rem; }
     }
   </style>
@@ -148,26 +187,34 @@
   const valorFrete = 16.00;
   const totalGeral = basePrice + valorFrete;
 
-  const bookLabel = qty === '2' ? 'Livros físicos' : 'Livro físico';
+  const bookLabel = 'Livro físico';
 
   // Atualiza o resumo do pedido no HTML
   const summaryContainer = document.querySelector('.order-summary');
   summaryContainer.innerHTML = `
     <span class="summary-header">Carrinho da Compra</span>
     <div class="summary-line">
-      <span>${qty.padStart(2, '0')} Esperança Através das Lágrimas • ${bookLabel}</span>
-      <span>R$ ${basePrice.toFixed(2).replace('.', ',')}</span>
+      <div class="item-info">
+        <span class="item-name">${qty.padStart(2, '0')} Esperança Através das Lágrimas</span>
+        <span class="item-detail">${bookLabel}</span>
+      </div>
+      <span class="item-price">R$ ${basePrice.toFixed(2).replace('.', ',')}</span>
     </div>
     ${fmt === 'kindle' ? `
     <div class="summary-line">
-      <span>01 Esperança Através das Lágrimas • Versão Kindle</span>
-      <span style="font-style: italic;">Grátis</span>
+      <div class="item-info">
+        <span class="item-name">01 Esperança Através das Lágrimas</span>
+        <span class="item-detail">Versão Kindle</span>
+      </div>
+      <span class="item-price" style="font-style: italic;">Grátis</span>
     </div>` : ''}
     <div class="summary-line">
-      <span>Frete Fixo <span style="font-size: 0.82rem; font-style: italic; opacity: 0.8; margin-left: 5px;">(Os envios acontecerão no dia 27 de maio).</span></span>
-      <span>R$ ${valorFrete.toFixed(2).replace('.', ',')}</span>
+      <div class="item-info">
+        <span class="item-name">Frete Fixo <span style="font-size: 0.82rem; font-style: italic; opacity: 0.8; margin-left: 5px;">(Os envios acontecerão no dia 27 de maio).</span></span>
+      </div>
+      <span class="item-price">R$ ${valorFrete.toFixed(2).replace('.', ',')}</span>
     </div>
-    <div class="summary-line summary-total" style="margin-top: 20px;">
+    <div class="summary-line summary-total" style="margin-top: 20px; flex-direction: row; justify-content: space-between; text-align: left;">
       <span>Total:</span>
       <span>R$ ${totalGeral.toFixed(2).replace('.', ',')}</span>
     </div>

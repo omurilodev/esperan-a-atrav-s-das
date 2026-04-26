@@ -129,7 +129,12 @@
 
     .menu-card input {
       position: absolute;
+      top: 0;
+      left: 0;
+      width: 1px;
+      height: 1px;
       opacity: 0;
+      pointer-events: none;
     }
 
     .menu-card:has(input:checked) {
@@ -228,8 +233,27 @@
     .summary-line {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10px;
+      align-items: center;
+      margin-bottom: 12px;
       font-size: 0.95rem;
+    }
+
+    .item-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 5px;
+        line-height: 1.4;
+    }
+
+    .item-detail::before {
+        content: " • ";
+    }
+
+    .item-detail {
+        font-size: 0.85em;
+        opacity: 0.8;
+        font-style: italic;
     }
 
     .summary-total {
@@ -311,7 +335,22 @@
       .card-content strong { font-size: 0.8rem; }
       .card-content small { font-size: 0.68rem; }
       .summary-header { font-size: 0.7rem; }
-      .summary-line { font-size: 0.78rem; line-height: 1.4; }
+      .summary-line { 
+        font-size: 0.78rem; 
+        line-height: 1.4; 
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left; 
+        gap: 15px; 
+      }
+      .item-info { flex-direction: column; align-items: flex-start; flex: 1; gap: 0; }
+      .item-detail::before { content: ""; }
+      .summary-line .item-price { 
+        width: auto; 
+        text-align: right; 
+        font-weight: bold;
+      }
       .btn { padding: 12px 15px; font-size: 0.8rem; }
     }
   </style>
@@ -392,24 +431,32 @@
       const selectedRadio = document.querySelector('input[name="prato"]:checked');
       const rawBrunchName = selectedRadio.parentElement.querySelector('strong').innerText.split(':')[0];
       const brunchName = rawBrunchName.charAt(0).toUpperCase() + rawBrunchName.slice(1).toLowerCase();
-      const bookLabel = qty === '2' ? 'Livros físicos' : 'Livro físico';
+      const bookLabel = 'Livro físico';
 
       summaryContainer.innerHTML = `
       <span class="summary-header">Carrinho da Compra</span>
       <div class="summary-line">
-        <span>${qty.padStart(2, '0')} Esperança Através das Lágrimas • ${bookLabel}</span>
-        <span>R$ ${basePrice.toFixed(2).replace('.', ',')}</span>
+        <div class="item-info">
+          <span class="item-name">${qty.padStart(2, '0')} Esperança Através das Lágrimas</span>
+          <span class="item-detail">${bookLabel}</span>
+        </div>
+        <span class="item-price">R$ ${basePrice.toFixed(2).replace('.', ',')}</span>
       </div>
       ${fmt === 'kindle' ? `
       <div class="summary-line">
-        <span>01 Esperança Através das Lágrimas • Versão Kindle</span>
-        <span style="font-style: italic;">Grátis</span>
+        <div class="item-info">
+          <span class="item-name">01 Esperança Através das Lágrimas</span>
+          <span class="item-detail">Versão Kindle</span>
+        </div>
+        <span class="item-price" style="font-style: italic;">Grátis</span>
       </div>` : ''}
       <div class="summary-line">
-        <span>${brunchName}</span>
-        <span>R$ ${precoPratoAtual.toFixed(2).replace('.', ',')}</span>
+        <div class="item-info">
+          <span class="item-name">${brunchName}</span>
+        </div>
+        <span class="item-price">R$ ${precoPratoAtual.toFixed(2).replace('.', ',')}</span>
       </div>
-      <div class="summary-line summary-total" style="margin-top: 20px;">
+      <div class="summary-line summary-total" style="margin-top: 20px; flex-direction: row; justify-content: space-between; text-align: left;">
         <span>Total:</span>
         <span id="display-total">R$ ${totalAtual.toFixed(2).replace('.', ',')}</span>
       </div>
