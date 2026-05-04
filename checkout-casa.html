@@ -235,7 +235,7 @@
       initialization: { amount: amount },
       customization: {
         paymentMethods: {
-          ticket: "all",
+          ticket: [],
           bankTransfer: "all",
           creditCard: "all",
           debitCard: "all",
@@ -299,6 +299,9 @@
                     <p style="margin-top: 20px; font-size: 0.8rem; color: #C5A059; font-style: italic;">A confirmação é instantânea.</p>
                   </div>
                 `;
+
+                iniciarVigilancia(data.id);
+
                 resolve();
               } 
               else if (data.status === "approved") {
@@ -320,6 +323,39 @@
       }
     });
   }
+
+  let intervalovigilancia; // Variável global para controlar o loop
+
+function iniciarVigilancia(paymentId) {
+    console.log("Iniciando vigilância para o pagamento:", paymentId);
+
+    // O setInterval executa a função a cada 7 segundos
+    intervalovigilancia = setInterval(async () => {
+        try {
+            // Chamada para o seu novo webhook de consulta no n8n
+            const response = await fetch(`https://hook.neowchat.com.br/webhook/consultar-pix?id=${paymentId}`);
+            const data = await response.json();
+
+            console.log("Status atual do pagamento:", data.status);
+
+            // Se o status for aprovado, para o loop e redireciona
+            if (data.status === 'approved') {
+                clearInterval(intervalovigilancia);
+                window.location.href = "obrigado.html";
+            }
+        } catch (error) {
+            console.error("Erro ao consultar o status do Pix:", error);
+        }
+    }, 7000); // 7000 milissegundos = 7 segundos
+
+    // Segurança: Para de vigiar após 20 minutos (evita consumo desnecessário)
+    setTimeout(() => {
+        if (intervalovigilancia) {
+            clearInterval(intervalovigilancia);
+            console.log("Vigilância encerrada por tempo limite.");
+        }
+    }, 1200000); 
+}
 </script>
 
 </body>
