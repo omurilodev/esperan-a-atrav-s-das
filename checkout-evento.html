@@ -119,7 +119,6 @@
     .menu-card {
       border: 1px solid #d8d5c8;
       padding: 0;
-      cursor: pointer;
       transition: 0.3s;
       position: relative;
       border-radius: 2px;
@@ -127,20 +126,47 @@
       background: #fff;
     }
 
-    .menu-card input {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 1px;
-      height: 1px;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .menu-card:has(input:checked) {
+    .menu-card.selected {
       border-color: #C5A059;
       background: #fdfaf3;
       box-shadow: 0 10px 30px rgba(172, 133, 65, 0.1);
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .qty-btn {
+      width: 30px;
+      height: 30px;
+      border: 1px solid #C5A059;
+      background: transparent;
+      color: #C5A059;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .qty-btn:hover {
+      background: #C5A059;
+      color: #fff;
+    }
+
+    .qty-display {
+      font-family: 'Bodoni', serif;
+      font-size: 1.2rem;
+      color: #1a1a1a;
+      min-width: 20px;
+      text-align: center;
     }
 
     .card-img {
@@ -280,9 +306,16 @@
       transition: all 0.4s;
     }
 
-    .btn:hover {
+    .btn:hover:not(:disabled) {
       background-color: #333;
       transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      background-color: #d8d5c8;
+      color: #888;
+      cursor: not-allowed;
+      transform: none;
     }
 
     #paymentBrick_container {
@@ -376,25 +409,35 @@
         <input type="email" id="email" placeholder="E-mail" required>
       </div>
 
-      <p class="form-label">Escolha a sua opção de brunch</p>
+      <p class="form-label">Escolha a(s) sua(s) opção(ões) de brunch</p>
       <div class="menu-options">
-        <label class="menu-card">
-          <input type="radio" name="prato" value="brunch_individual" data-preco="41.90" checked>
+        <div class="menu-card selected">
           <img src="./assets/1.png" alt="Brunch Individual" class="card-img">
           <span class="card-content" style="padding-top: 45px;">
             <strong>Brunch Individual: R$ 41,90</strong>
             <small>01 fatia de pão brioche artesanal tostado com manteiga, 01 ovo, 01 fatia de bacon, sourcream, 02 panquecas com maple syrup, 01 bolo caseiro de laranja com calda.</small>
+            <div class="qty-control">
+              <button type="button" class="qty-btn minus" data-target="qty-brunch-1">-</button>
+              <span class="qty-display" id="display-qty-brunch-1">1</span>
+              <button type="button" class="qty-btn plus" data-target="qty-brunch-1">+</button>
+              <input type="hidden" id="qty-brunch-1" class="brunch-qty-input" value="1" data-preco="41.90" data-name="Brunch Individual" data-value="brunch_individual">
+            </div>
           </span>
-        </label>
+        </div>
 
-        <label class="menu-card">
-          <input type="radio" name="prato" value="brunch_individual_plus" data-preco="78.90">
+        <div class="menu-card">
           <img src="./assets/2.png" alt="Brunch Individual Plus" class="card-img">
           <span class="card-content">
             <strong>Brunch Individual <br> Plus: R$ 78,90</strong>
             <small>01 croissant de fermentação natural artesanal, 01 ovo, 01 fatia de bacon, sourcream, tomate confit, pasta de abacate, 02 panquecas com maple syrup, 01 bolo caseiro de laranja.</small>
+            <div class="qty-control">
+              <button type="button" class="qty-btn minus" data-target="qty-brunch-2">-</button>
+              <span class="qty-display" id="display-qty-brunch-2">0</span>
+              <button type="button" class="qty-btn plus" data-target="qty-brunch-2">+</button>
+              <input type="hidden" id="qty-brunch-2" class="brunch-qty-input" value="0" data-preco="78.90" data-name="Brunch Individual Plus" data-value="brunch_individual_plus">
+            </div>
           </span>
-        </label>
+        </div>
       </div>
 
       <div class="order-summary">
@@ -403,7 +446,8 @@
         <div class="summary-line summary-total"><span>Total:</span> <span id="display-total">R$ 117,90</span></div>
       </div>
 
-      <button type="submit" class="btn">Confirmar e ir para pagamento</button>
+      <button type="submit" class="btn" id="btn-submit">Confirmar e ir para pagamento</button>
+      <p id="brunch-warning" style="color: #d9534f; font-size: 0.85rem; margin-top: 15px; text-align: center; display: none; font-family: 'Bodoni', serif; letter-spacing: 0.5px;">Por favor, selecione pelo menos uma opção de brunch para continuar.</p>
     </form>
 
     <div id="paymentBrick_container"></div>
@@ -422,16 +466,37 @@
     let bookName = (qty === '2') ? "Combo 02 Livros (Pré-Venda)" : "01 Livro (Pré-Venda)";
     if (fmt === 'kindle') bookName += " + Ebook Kindle (Grátis)";
 
-    let precoPratoAtual = 41.90; // Valor inicial (Brunch Individual)
-    let totalAtual = basePrice + precoPratoAtual;
+    let totalAtual = basePrice;
 
     // Função para atualizar o resumo no HTML
     function updateSummary() {
       const summaryContainer = document.querySelector('.order-summary');
-      const selectedRadio = document.querySelector('input[name="prato"]:checked');
-      const rawBrunchName = selectedRadio.parentElement.querySelector('strong').innerText.split(':')[0];
-      const brunchName = rawBrunchName.charAt(0).toUpperCase() + rawBrunchName.slice(1).toLowerCase();
       const bookLabel = 'Livro físico';
+
+      let brunchesHTML = '';
+      let brunchesTotal = 0;
+      let totalQty = 0;
+
+      document.querySelectorAll('.brunch-qty-input').forEach(input => {
+        const q = parseInt(input.value);
+        if (q > 0) {
+          totalQty += q;
+          const price = parseFloat(input.dataset.preco);
+          const name = input.dataset.name;
+          const lineTotal = q * price;
+          brunchesTotal += lineTotal;
+          
+          brunchesHTML += `
+          <div class="summary-line">
+            <div class="item-info">
+              <span class="item-name">${q.toString().padStart(2, '0')}x ${name}</span>
+            </div>
+            <span class="item-price">R$ ${lineTotal.toFixed(2).replace('.', ',')}</span>
+          </div>`;
+        }
+      });
+
+      totalAtual = basePrice + brunchesTotal;
 
       summaryContainer.innerHTML = `
       <span class="summary-header">Carrinho da Compra</span>
@@ -450,27 +515,54 @@
         </div>
         <span class="item-price" style="font-style: italic;">Grátis</span>
       </div>` : ''}
-      <div class="summary-line">
-        <div class="item-info">
-          <span class="item-name">${brunchName}</span>
-        </div>
-        <span class="item-price">R$ ${precoPratoAtual.toFixed(2).replace('.', ',')}</span>
-      </div>
+      ${brunchesHTML}
       <div class="summary-line summary-total" style="margin-top: 20px; flex-direction: row; justify-content: space-between; text-align: left;">
         <span>Total:</span>
         <span id="display-total">R$ ${totalAtual.toFixed(2).replace('.', ',')}</span>
       </div>
     `;
+
+      const btnConfirmar = document.getElementById('btn-submit');
+      const brunchWarning = document.getElementById('brunch-warning');
+      if (btnConfirmar && brunchWarning) {
+        if (totalQty === 0) {
+          btnConfirmar.disabled = true;
+          brunchWarning.style.display = 'block';
+        } else {
+          btnConfirmar.disabled = false;
+          brunchWarning.style.display = 'none';
+        }
+      }
     }
 
     // Inicializa o resumo
     updateSummary();
 
-    // Atualização dinâmica dos valores no resumo quando muda o prato
-    document.querySelectorAll('input[name="prato"]').forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        precoPratoAtual = parseFloat(e.target.dataset.preco);
-        totalAtual = basePrice + precoPratoAtual;
+    // Eventos para os botões de quantidade de brunch
+    document.querySelectorAll('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetId = e.target.dataset.target;
+        const input = document.getElementById(targetId);
+        const display = document.getElementById('display-' + targetId);
+        const card = input.closest('.menu-card');
+        
+        let currentQty = parseInt(input.value);
+        
+        if (e.target.classList.contains('plus')) {
+          currentQty++;
+        } else if (e.target.classList.contains('minus')) {
+          if (currentQty > 0) currentQty--;
+        }
+        
+        input.value = currentQty;
+        display.innerText = currentQty;
+        
+        if (currentQty > 0) {
+          card.classList.add('selected');
+        } else {
+          card.classList.remove('selected');
+        }
+        
         updateSummary();
       });
     });
@@ -478,6 +570,17 @@
     // GSAP para transição suave do formulário para o checkout
     document.getElementById('form-evento').addEventListener('submit', (e) => {
       e.preventDefault();
+      
+      let totalBrunches = 0;
+      document.querySelectorAll('.brunch-qty-input').forEach(input => {
+        totalBrunches += parseInt(input.value);
+      });
+      
+      if (totalBrunches === 0) {
+        document.getElementById('brunch-warning').style.display = 'block';
+        return;
+      }
+      
       gsap.to("#form-evento", { opacity: 0, height: 0, display: 'none', duration: 0.5 });
       document.getElementById('paymentBrick_container').style.display = 'block';
       gsap.from("#paymentBrick_container", { opacity: 0, y: 20, duration: 0.5, delay: 0.2 });
@@ -503,27 +606,39 @@
             const nomeCliente = document.getElementById('nome').value;
             const telefoneCliente = document.getElementById('telefone').value.replace(/\D/g, '');
             const emailCliente = document.getElementById('email').value;
-            const pratoEscolhido = document.querySelector('input[name="prato"]:checked').value;
-
-            const payload = {
-              token: formData.token,
-              issuer_id: formData.issuer_id,
-              payment_method_id: formData.payment_method_id,
-              installments: formData.installments,
-              payer: {
-                email: emailCliente,
-                identification: formData.payer ? formData.payer.identification : null
-              },
-              metadata: {
-                tipo_entrega: "evento",
-                prato: pratoEscolhido,
-                nome: nomeCliente,
-                telefone: telefoneCliente,
-                email: emailCliente,
-                quantidade: qty,
-                formato: fmt
+            
+            let pratosEscolhidos = [];
+            document.querySelectorAll('.brunch-qty-input').forEach(input => {
+              const q = parseInt(input.value);
+              if (q > 0) {
+                pratosEscolhidos.push(`${q}x ${input.dataset.name}`);
               }
-            };
+            });
+            const pratoEscolhidoStr = pratosEscolhidos.join(" + ");
+const qtyIndividual = parseInt(document.getElementById('qty-brunch-1').value) || 0;
+const qtyPlus = parseInt(document.getElementById('qty-brunch-2').value) || 0;
+
+const payload = {
+  token: formData.token,
+  issuer_id: formData.issuer_id,
+  payment_method_id: formData.payment_method_id,
+  installments: formData.installments,
+  payer: {
+    email: emailCliente,
+    identification: formData.payer ? formData.payer.identification : null
+  },
+  metadata: {
+    tipo_entrega: "evento",
+    prato: pratoEscolhidoStr, // Mantemos esse para ficar bonitinho no seu e-mail!
+    qtd_brunch_individual: qtyIndividual, // NOVA LINHA
+    qtd_brunch_plus: qtyPlus,             // NOVA LINHA
+    nome: nomeCliente,
+    telefone: telefoneCliente,
+    email: emailCliente,
+    quantidade: qty,
+    formato: fmt
+  }
+};
 
             return new Promise((resolve, reject) => {
               fetch("https://hook.neowchat.com.br/webhook/pagamento-livro-isabella", {
@@ -547,7 +662,7 @@
                   </div>
                 `;
 
-                iniciarVigilancia(data.id);
+                iniciarVigilancia(data.id_pagamento);
                     resolve();
                   }
                   // LÓGICA PARA SUCESSO CARTÃO/OUTROS

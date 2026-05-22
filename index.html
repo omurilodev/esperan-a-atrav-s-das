@@ -833,15 +833,8 @@
         <div class="delivery-selection">
           <p class="form-label" style="margin-bottom: 12px; margin-top: 35px; text-align: left;">Opções de entrega:</p>
           <label class="radio-option">
-            <input type="radio" name="entrega" value="casa">
+            <input type="radio" name="entrega" value="casa" checked>
             <span>Receber em casa</span>
-          </label>
-          <label class="radio-option" style="display: flex; align-items: flex-start;">
-            <input type="radio" name="entrega" value="evento" style="margin-top: 4px;">
-            <div style="display: flex; flex-direction: column; gap: 2px;">
-              <span>Retirar no evento de lançamento</span>
-              <span id="open-event-info" style="font-size: 0.72rem; color: #ac8541; font-style: italic; cursor: pointer;">Ver mais informações</span>
-            </div>
           </label>
 
           <p class="form-label" style="margin-top: 25px; margin-bottom: 12px; text-align: left;">Você deseja receber:</p>
@@ -1142,16 +1135,22 @@
       const openEventInfo = document.getElementById('open-event-info');
       const eventClose = document.getElementById('event-close');
 
-      openEventInfo.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        eventModal.classList.add('active');
-      });
+      if (openEventInfo) {
+        openEventInfo.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          eventModal.classList.add('active');
+        });
+      }
 
-      eventClose.addEventListener('click', () => eventModal.classList.remove('active'));
-      eventModal.addEventListener('click', (e) => {
-        if (e.target === eventModal) eventModal.classList.remove('active');
-      });
+      if (eventClose) {
+        eventClose.addEventListener('click', () => eventModal.classList.remove('active'));
+      }
+      if (eventModal) {
+        eventModal.addEventListener('click', (e) => {
+          if (e.target === eventModal) eventModal.classList.remove('active');
+        });
+      }
     });
   </script>
 </body>
